@@ -23,6 +23,9 @@ class MainWidget(Widget):
         self.play_button = Button(text="Play")
         layout.add_widget(self.play_button)
 
+        self.options_button = Button(text="Options")
+        layout.add_widget(self.options_button)
+
 class MainApp(App):
     def build(self):
         return MainWidget()
