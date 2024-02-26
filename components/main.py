@@ -5,10 +5,18 @@ from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.graphics import Rectangle, Color
 from kivy.core.window import Window
-
+from kivy.lang import Builder
+from kivy import Image
 class MainWidget(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        self.background_image = Image(source="/user/Boony/ดาวน์โหลด/maxresdefault", pos=self.pos, size=self.size)
+        self.add_widget(self.background_image, insert=0)  # แทรกที่ด้านล่าง
+
+        with self.canvas.before:
+            Color(1, 1, 1)  
+            self.background_image = Rectangle(pos=self.pos, size=self.size)
         
         self.canvas.clear()
         with self.canvas:
@@ -30,6 +38,11 @@ class MainWidget(Widget):
         
         self.options_button = Button(text="Options")
         layout.add_widget(self.options_button)
+
+
+    def on_size(self, instance, width, height):
+        self.background_image.pos = self.pos
+        self.background_image.size = self.size
 
 class MainApp(App):
     def build(self):
