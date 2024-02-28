@@ -56,6 +56,7 @@ class MainWidget(Widget):
         for widget in self.children[:]:
             if isinstance(widget, BoxLayout):
                 self.remove_widget(widget)
+                self.remove_widget(self.title_label)
 
     def construct_game_menu(self, instance):
 
@@ -69,9 +70,13 @@ class MainWidget(Widget):
         self.add_widget(new_layout)
         
         new_title_label = Label(text="Game Started!", font_size=48, color="black")
-        new_layout.add_widget(new_title_label)
+        new_title_label.size_hint = (None, None)
+        new_title_label.size = (self.width, 100)
+        new_title_label.center_x = Window.width / 2
+        new_title_label.top = Window.height - 50
+        self.add_widget(new_title_label)
         
-        new_back_button = Button(text="Back to Main Menu")
+        new_back_button = Button(text="Back to Main Menu", size_hint=(None, None), size=(200, 60))
         new_back_button.bind(on_press=self.on_back_button_pressed)
         new_layout.add_widget(new_back_button)
 
