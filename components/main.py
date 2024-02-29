@@ -16,6 +16,9 @@ class MainWidget(Widget):
     def on_back_button_pressed(self, instance):
         self.construct_main_menu()
         
+    def on_exit_button_pressed(self, instance):
+        App.get_running_app().stop()
+        
     def construct_main_menu(self):
 
         self.clear_layout()
@@ -49,7 +52,8 @@ class MainWidget(Widget):
         self.play_button.bind(on_press=self.construct_game_menu)
         layout.add_widget(self.play_button)
         
-        self.options_button = Button(text="Options", size_hint=(None, None), size=(200, 60))
+        self.options_button = Button(text="Exit", size_hint=(None, None), size=(200, 60))
+        self.options_button.bind(on_press=self.on_exit_button_pressed)
         layout.add_widget(self.options_button)
 
     def clear_layout(self):
