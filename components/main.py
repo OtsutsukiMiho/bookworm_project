@@ -6,14 +6,29 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.graphics import Rectangle, Color
 from kivy.core.window import Window
 from kivy.uix.image import Image
+from kivy.core.audio import SoundLoader
 
 class MainWidget(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        
+
+        # โหลดเพลงสำหรับหน้าเมนูหลักและหน้าเกม
+        self.main_music = SoundLoader.load('main.mp3')
+        self.game_music = SoundLoader.load('Ingame.mp3')
+
+        # เริ่มเล่นเพลงในหน้าเมนูหลัก
+        self.main_music.play()
+        self.main_music.loop = True
         self.construct_main_menu()
+
+    def on_play_button_pressed(self, instance):
+
+        self.construct_game_menu(instance)
         
     def on_back_button_pressed(self, instance):
+        self.game_music.stop()
+        self.main_music.play()
+        self.main_music.loop = True
         self.construct_main_menu()
         
     def on_exit_button_pressed(self, instance):
@@ -83,6 +98,10 @@ class MainWidget(Widget):
         new_back_button = Button(text="Back to Main Menu", size_hint=(None, None), size=(200, 60))
         new_back_button.bind(on_press=self.on_back_button_pressed)
         new_layout.add_widget(new_back_button)
+
+        self.main_music.stop()
+        self.game_music.play()
+        self.game_music.loop = True
 
 class MainApp(App):
     def build(self):
