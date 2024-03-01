@@ -16,18 +16,19 @@ class MainWidget(Widget):
         # จุดนี้สำหรับใส่เพลงหน้าเมนและหน้าเล่นเกม
         self.main_music = SoundLoader.load('main.mp3')
         self.game_music = SoundLoader.load('Ingame.mp3')
-        self.volume = 1.0
+        self.volume = 0.5
         # คำสั่งเล่นเพลงในเมน
         self.main_music.play()
         self.main_music.loop = True
         self.construct_main_menu()
-
-    def on_play_button_pressed(self, instance):
-
-        self.construct_game_menu(instance)
         
-    def on_back_button_pressed(self, instance):
-        self.game_music.stop()
+    def on_back_button_pressed_option(self, instance):
+        self.main_music.loop = True
+        self.main_music.volume = self.volume
+        self.construct_main_menu()
+        
+    def on_back_button_pressed_game(self, instance):
+        self.main_music.stop()
         self.main_music.play()
         self.main_music.loop = True
         self.main_music.volume = self.volume
@@ -107,7 +108,7 @@ class MainWidget(Widget):
         self.add_widget(new_title_label)
         
         new_back_button = Button(text="Back to Main Menu", size_hint=(None, None), size=(200, 60))
-        new_back_button.bind(on_press=self.on_back_button_pressed)
+        new_back_button.bind(on_press=self.on_back_button_pressed_game)
         new_layout.add_widget(new_back_button)
 
         self.main_music.stop()
@@ -144,7 +145,7 @@ class MainWidget(Widget):
         new_layout.add_widget(volume_slider)
 
         new_back_button = Button(text="Back to Main Menu", size_hint=(None, None), size=(200, 60))
-        new_back_button.bind(on_press=self.on_back_button_pressed)
+        new_back_button.bind(on_press=self.on_back_button_pressed_option)
         new_layout.add_widget(new_back_button)
 
 class MainApp(App):
