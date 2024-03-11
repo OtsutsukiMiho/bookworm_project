@@ -13,13 +13,12 @@ class MainWidget(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        # จุดนี้สำหรับใส่เพลงหน้าเมนและหน้าเล่นเกม
         self.main_music = SoundLoader.load('main.mp3')
         self.game_music = SoundLoader.load('Ingame.mp3')
-        self.volume = 0.5
-        # คำสั่งเล่นเพลงในเมน
+        self.volume = 0.25
         self.main_music.play()
         self.main_music.loop = True
+        self.volume = 0.25
         self.construct_main_menu()
         
     def on_back_button_pressed_option(self, instance):
