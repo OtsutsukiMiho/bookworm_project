@@ -8,6 +8,7 @@ from kivy.core.window import Window
 from kivy.uix.image import Image
 from kivy.core.audio import SoundLoader
 from kivy.uix.slider import Slider
+from kivy.uix.textinput import TextInput
 
 class MainWidget(Widget):
     def __init__(self, **kwargs):
@@ -119,6 +120,26 @@ class MainWidget(Widget):
         self.game_music.loop = True
         self.game_music.volume = self.volume
 
+        
+        self.question_label = Label(text="", font_size=24, color="black")
+        new_layout.add_widget(self.question_label)
+
+        self.answer_input = TextInput(hint_text="Type your answer here", multiline=False, font_size=18)
+        new_layout.add_widget(self.answer_input)
+
+        submit_button = Button(text="Submit Answer", size_hint=(None, None), size=(200, 60))
+        submit_button.bind(on_press=self.check_answer)
+        new_layout.add_widget(submit_button)
+
+        # สร้างคำถามและตอบ
+        self.current_question = "What is the capital of France?"
+        self.correct_answer = "Paris"
+        self.update_question()
+
+    def update_question(self):
+        self.question_label.text = self.current_question
+        self.answer_input.text = ""
+
     def construct_options_menu(self, instance):
         self.clear_layout()
 
@@ -147,6 +168,15 @@ class MainWidget(Widget):
         new_back_button = Button(text="Back to Main Menu", size_hint=(None, None), size=(200, 60))
         new_back_button.bind(on_press=self.on_back_button_pressed_option)
         new_layout.add_widget(new_back_button)
+
+    def check_answer(self, instance):
+        user_answer = self.answer_input.text.strip().lower()
+        if user_answer == self.correct_answer.lower():
+            self.current_question = "Correct! Next question..."
+            self.correct_answer = "Next Answer"
+        else:
+            self.current_question = "Wrong! Try again..."
+        self.update_question()
 
 class MainApp(App):
     def build(self):
