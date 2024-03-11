@@ -9,6 +9,9 @@ from kivy.uix.image import Image
 from kivy.core.audio import SoundLoader
 from kivy.uix.slider import Slider
 from kivy.uix.textinput import TextInput
+import json
+import random
+import os
 
 class MainWidget(Widget):
     def __init__(self, **kwargs):
@@ -129,10 +132,17 @@ class MainWidget(Widget):
         submit_button = Button(text="Submit Answer", size_hint=(None, None), size=(200, 60))
         submit_button.bind(on_press=self.check_answer)
         new_layout.add_widget(submit_button)
+        
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        data_file_path = os.path.join(current_dir, 'bw_data.json')
 
-        # สร้างคำถามและตอบ
-        self.current_question = "What is the capital of France?"
-        self.correct_answer = "Paris"
+        with open(data_file_path, 'r') as file:
+            data = json.load(file)
+        
+        random_index = random.randint(0, len(data['questions']) - 1)
+
+        self.current_question = data['questions'][random_index]['question']
+        self.correct_answer = data['questions'][random_index]['answer']
         self.update_question()
 
     def update_question(self):
