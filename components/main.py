@@ -8,6 +8,7 @@ from kivy.core.window import Window
 from kivy.uix.image import Image
 from kivy.core.audio import SoundLoader
 from kivy.uix.slider import Slider
+from kivy.clock import Clock
 from kivy.uix.textinput import TextInput
 import json
 import random
@@ -207,16 +208,21 @@ class MainWidget(Widget):
         new_back_button = Button(text="Back to Main Menu", size_hint=(None, None), size=(200, 60))
         new_back_button.bind(on_press=self.on_back_button_pressed_option)
         new_layout.add_widget(new_back_button)
+        
+    def show_status_clear_text(self, instance):
+        self.status_label.text = ""
 
     def check_answer(self, instance):
         user_answer = self.answer_input.text.strip().lower()
         if user_answer == self.correct_answer.lower():
             self.status_label.text = "Correct! Next question..."
             self.status_label.color = "lime"
+            Clock.schedule_interval(self.show_status_clear_text, 1)
             self.next_question()
         else:
             self.status_label.text = "Wrong! Try again..."
             self.status_label.color = "red"
+            Clock.schedule_interval(self.show_status_clear_text, 1)
         self.update_question()
 
 class MainApp(App):
