@@ -122,14 +122,23 @@ class MainWidget(Widget):
         self.game_music.loop = True
         self.game_music.volume = self.volume
 
-        
         self.question_label = Label(text="", font_size=36, color="black")
         new_layout.add_widget(self.question_label)
         
         self.status_label = Label(text="", font_size=30, color="red")
         new_layout.add_widget(self.status_label)
+        
+        ui_hp_all = BoxLayout(orientation='vertical', spacing=20, padding=(5, 5))
+        new_layout.add_widget(ui_hp_all)
+        
+        self.ui_hp_enemy = Label(text="Enemy HP: 0", font_size=30, color="red")
+        ui_hp_all.add_widget(self.ui_hp_enemy)
+        
+        self.ui_hp_player = Label(text="Your HP: 0", font_size=30, color="black")
+        ui_hp_all.add_widget(self.ui_hp_player)
 
         self.answer_input = TextInput(hint_text="Type your answer here", multiline=False, font_size=18)
+        self.answer_input.bind(on_text_validate=self.check_answer)
         new_layout.add_widget(self.answer_input)
 
         submit_button = Button(text="Submit Answer", size_hint=(None, None), size=(200, 60))
