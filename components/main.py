@@ -174,9 +174,10 @@ class MainWidget(Widget):
         self.update_question()
 
     def update_question(self):
+        self.ui_hp_player.text = f"Your HP: {self.current_hp_player}"
+        self.ui_hp_enemy.text = f"Enemy HP: {self.current_hp_enemy}"
         self.question_label.text = self.current_question
         self.answer_input.text = ""
-        self.answer_input.focus
 
     def construct_options_menu(self, instance):
         self.clear_layout()
