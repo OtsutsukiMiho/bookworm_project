@@ -145,6 +145,9 @@ class MainWidget(Widget):
         submit_button.bind(on_press=self.check_answer)
         new_layout.add_widget(submit_button)
         
+        self.current_hp_enemy = 100
+        self.current_hp_player = 100
+        
         current_dir = os.path.dirname(os.path.abspath(__file__))
         data_file_path = os.path.join(current_dir, 'bw_data.json')
 
@@ -173,6 +176,7 @@ class MainWidget(Widget):
     def update_question(self):
         self.question_label.text = self.current_question
         self.answer_input.text = ""
+        self.answer_input.focus
 
     def construct_options_menu(self, instance):
         self.clear_layout()
@@ -211,6 +215,7 @@ class MainWidget(Widget):
             self.next_question()
         else:
             self.status_label.text = "Wrong! Try again..."
+            self.status_label.color = "red"
         self.update_question()
 
 class MainApp(App):
