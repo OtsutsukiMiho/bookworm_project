@@ -123,8 +123,11 @@ class MainWidget(Widget):
         self.game_music.volume = self.volume
 
         
-        self.question_label = Label(text="", font_size=24, color="black")
+        self.question_label = Label(text="", font_size=36, color="black")
         new_layout.add_widget(self.question_label)
+        
+        self.status_label = Label(text="", font_size=30, color="red")
+        new_layout.add_widget(self.status_label)
 
         self.answer_input = TextInput(hint_text="Type your answer here", multiline=False, font_size=18)
         new_layout.add_widget(self.answer_input)
@@ -136,6 +139,19 @@ class MainWidget(Widget):
         current_dir = os.path.dirname(os.path.abspath(__file__))
         data_file_path = os.path.join(current_dir, 'bw_data.json')
 
+        with open(data_file_path, 'r') as file:
+            data = json.load(file)
+        
+        random_index = random.randint(0, len(data['questions']) - 1)
+
+        self.current_question = data['questions'][random_index]['question']
+        self.correct_answer = data['questions'][random_index]['answer']
+        self.update_question()
+        
+    def next_question(self):
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        data_file_path = os.path.join(current_dir, 'bw_data.json')
+        
         with open(data_file_path, 'r') as file:
             data = json.load(file)
         
@@ -181,10 +197,11 @@ class MainWidget(Widget):
     def check_answer(self, instance):
         user_answer = self.answer_input.text.strip().lower()
         if user_answer == self.correct_answer.lower():
-            self.current_question = "Correct! Next question..."
-            self.correct_answer = "Next Answer"
+            self.status_label.text = "Correct! Next question..."
+            self.status_label.color = "lime"
+            self.next_question()
         else:
-            self.current_question = "Wrong! Try again..."
+            self.status_label.text = "Wrong! Try again..."
         self.update_question()
 
 class MainApp(App):
