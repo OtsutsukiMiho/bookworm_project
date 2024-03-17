@@ -265,16 +265,34 @@ class MainWidget(Widget):
     def attack_enemy(self):
         damage = random.randint(10, 20)  
         self.current_hp_enemy -= damage
-        if self.current_hp_enemy < 0:
+        if self.current_hp_enemy <= 0:  # แก้ไขที่นี่
             self.current_hp_enemy = 0
+            self.status_label.text = "Congratulations! You have won the game!"
+            self.status_label.color = "lime"
+            self.show_end_game_popup()
+            return
         self.ui_hp_enemy.text = f"Enemy HP: {self.current_hp_enemy}"
 
     def enemy_attack(self):
         damage = random.randint(5, 15)  
         self.current_hp_player -= damage
-        if self.current_hp_player < 0:
+        if self.current_hp_player <= 0:  # แก้ไขที่นี่
             self.current_hp_player = 0
+            self.status_label.text = "Game over! You have been defeated!"
+            self.status_label.color = "red"
+            self.show_end_game_popup()
+            return
         self.ui_hp_player.text = f"Your HP: {self.current_hp_player}"
+
+    def show_end_game_popup(self):
+        popup = Popup(title='Game Over', size_hint=(None, None), size=(400, 200))
+        content_layout = BoxLayout(orientation='vertical', spacing=10, padding=10)
+        content_layout.add_widget(Label(text=self.status_label.text))
+        button = Button(text='Return to Main Menu')
+        button.bind(on_press=self.construct_main_menu)
+        content_layout.add_widget(button)
+        popup.content = content_layout
+        popup.open()
 
     def show_status_clear_text(self, instance):
         self.status_label.text = ""
@@ -290,11 +308,15 @@ class MainWidget(Widget):
             Clock.schedule_interval(self.show_status_clear_text, 1)
             self.attack_enemy() 
             self.next_question()
+            if self.current_hp_enemy <= 0:
+                self.show_end_game_popup()
         else:
             self.status_label.text = "Wrong! Try again..."
             self.status_label.color = "red"
             Clock.schedule_interval(self.show_status_clear_text, 1)
             self.enemy_attack()  
+            if self.current_hp_player <= 0:
+                self.show_end_game_popup()
         Clock.schedule_interval(self.focus_answer_input, 0.1)
 
 class MainApp(App):
