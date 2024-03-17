@@ -327,15 +327,11 @@ class MainWidget(Widget):
             Clock.schedule_interval(self.show_status_clear_text, 1)
             self.attack_enemy() 
             self.next_question()
-            if self.current_hp_enemy <= 0:
-                self.show_end_game_popup()
         else:
             self.status_label.text = "Wrong! Try again..."
             self.status_label.color = "red"
             Clock.schedule_interval(self.show_status_clear_text, 1)
             self.enemy_attack()  
-            if self.current_hp_player <= 0:
-                self.show_end_game_popup()
         Clock.schedule_interval(self.focus_answer_input, 0.1)
 
 class MainApp(App):
