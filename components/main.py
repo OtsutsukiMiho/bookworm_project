@@ -11,6 +11,7 @@ from kivy.uix.slider import Slider
 from kivy.clock import Clock
 from kivy.uix.textinput import TextInput
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
 import json
 import random
@@ -99,72 +100,97 @@ class MainWidget(Widget):
                 self.remove_widget(self.title_label)
 
     def construct_game_menu(self, instance):
-
         self.clear_layout()
 
-        new_layout = BoxLayout(orientation='vertical', spacing=20, padding=(10, 10))
-        new_layout.size_hint = (None, None)
-        new_layout.width = self.width  
-        new_layout.height = self.height  
-        new_layout.center = self.center
-        self.add_widget(new_layout)
-        
-        new_title_label = Label(text="Game Started!", font_size=48, color="black")
-        new_title_label.size_hint = (None, None)
-        new_title_label.size = (self.width, 100)
-        new_title_label.center_x = Window.width / 2
-        new_title_label.top = Window.height - 50
-        self.add_widget(new_title_label)
-        
-        new_back_button = Button(text="Back to Main Menu", size_hint=(None, None), size=(200, 60))
-        new_back_button.bind(on_press=self.on_back_button_pressed_game)
-        new_layout.add_widget(new_back_button)
+        top_layout = BoxLayout(orientation='vertical', spacing=20, padding=(10, 10))
+        top_layout.size_hint = (None, None)
+        top_layout.width = self.width  
+        top_layout.height = self.height * 0.8  
+        top_layout.center = self.center
+
+        top_title_label = Label(text="Bookworm Adventures", font_size=36, color="black", size_hint_y=None, height=50)
+        top_layout.add_widget(top_title_label)
+
+        self.question_label = Label(text="", font_size=24, color="black")
+        top_layout.add_widget(self.question_label)
+
+        self.status_label = Label(text="", font_size=20, color="red")
+        top_layout.add_widget(self.status_label)
+
+        ui_hp_all = BoxLayout(orientation='horizontal', spacing=20, padding=(5, 5))
+        self.ui_hp_enemy = Label(text="Enemy HP: 0", font_size=20, color="red")
+        self.ui_hp_player = Label(text="Your HP: 0", font_size=20, color="black")
+        ui_hp_all.add_widget(self.ui_hp_enemy)
+        ui_hp_all.add_widget(self.ui_hp_player)
+        top_layout.add_widget(ui_hp_all)
+
+        answer_layout = BoxLayout(orientation='horizontal', spacing=10, padding=(5, 5))
+        self.answer_input = TextInput(hint_text="Type your answer here", multiline=False, font_size=18)
+        submit_button = Button(text="Submit Answer", size_hint=(None, None), size=(150, 50))
+        submit_button.bind(on_press=self.check_answer)
+        answer_layout.add_widget(self.answer_input)
+        answer_layout.add_widget(submit_button)
+        top_layout.add_widget(answer_layout)
+
+        self.add_widget(top_layout)
+
+        bottom_layout = BoxLayout(orientation='horizontal', spacing=20, padding=(10, 10))
+        bottom_layout.size_hint = (None, None)
+        bottom_layout.width = self.width  
+        bottom_layout.height = self.height * 0.2  
+        bottom_layout.center = self.center
+
+        surrender_button = Button(text="Surrender", size_hint=(None, None), size=(150, 50))
+        surrender_button.bind(on_press=self.on_surrender_button_pressed)
+        bottom_layout.add_widget(surrender_button)
+
+        self.add_widget(bottom_layout)
 
         self.main_music.stop()
         self.game_music.play()
         self.game_music.loop = True
-
-        self.game_music.play()
-        self.game_music.loop = True
         self.game_music.volume = self.volume
 
-        self.question_label = Label(text="", font_size=36, color="black")
-        new_layout.add_widget(self.question_label)
-        
-        self.status_label = Label(text="", font_size=30, color="red")
-        new_layout.add_widget(self.status_label)
-        
-        ui_hp_all = BoxLayout(orientation='vertical', spacing=20, padding=(5, 5))
-        new_layout.add_widget(ui_hp_all)
-        
-        self.ui_hp_enemy = Label(text="Enemy HP: 0", font_size=30, color="red")
-        ui_hp_all.add_widget(self.ui_hp_enemy)
-        
-        self.ui_hp_player = Label(text="Your HP: 0", font_size=30, color="black")
-        ui_hp_all.add_widget(self.ui_hp_player)
-
-        self.answer_input = TextInput(hint_text="Type your answer here", multiline=False, font_size=18)
-        self.answer_input.bind(on_text_validate=self.check_answer)
-        new_layout.add_widget(self.answer_input)
-
-        submit_button = Button(text="Submit Answer", size_hint=(None, None), size=(200, 60))
-        submit_button.bind(on_press=self.check_answer)
-        new_layout.add_widget(submit_button)
-        
         self.current_hp_enemy = 100
         self.current_hp_player = 100
-        
+
         current_dir = os.path.dirname(os.path.abspath(__file__))
         data_file_path = os.path.join(current_dir, 'bw_data.json')
-
         with open(data_file_path, 'r') as file:
             data = json.load(file)
-        
         random_index = random.randint(0, len(data['questions']) - 1)
-
         self.current_question = data['questions'][random_index]['question']
         self.correct_answer = data['questions'][random_index]['answer']
         self.update_question()
+
+    def on_surrender_button_pressed(self, instance):
+        
+        popup = Popup(title='Surrender', size_hint=(None, None), size=(400, 200))
+
+        button_layout = BoxLayout(orientation='horizontal', spacing=10, padding=10)
+
+        yes_button = Button(text='Yes', size_hint=(None, None), size=(100, 50))
+        no_button = Button(text='No', size_hint=(None, None), size=(100, 50))
+
+        yes_button.bind(on_press=lambda instance: self.surrender_and_return_to_main_menu(popup))
+        no_button.bind(on_press=popup.dismiss)
+
+        button_layout.add_widget(yes_button)
+        button_layout.add_widget(no_button)
+
+        content_layout = BoxLayout(orientation='vertical', spacing=10)
+        content_layout.add_widget(Label(text='Are you sure you want to surrender?'))
+        content_layout.add_widget(button_layout)
+
+        popup.content = content_layout
+
+        popup.open()
+    
+    def surrender_and_return_to_main_menu(self, popup_instance):
+        self.main_music.loop = True
+        self.main_music.volume = self.volume
+        popup_instance.dismiss()
+        self.construct_main_menu()
         
     def next_question(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
