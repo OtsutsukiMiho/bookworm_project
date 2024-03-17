@@ -162,6 +162,7 @@ class MainWidget(Widget):
         random_index = random.randint(0, len(data['questions']) - 1)
         self.current_question = data['questions'][random_index]['question']
         self.correct_answer = data['questions'][random_index]['answer']
+        self.current_question_difficulty = data['questions'][random_index]['difficulty']
         self.update_question()
 
     def on_surrender_button_pressed(self, instance):
@@ -263,7 +264,14 @@ class MainWidget(Widget):
         self.volume_percentage_label.text = f"Volume : {int(self.volume * 100)}%"
 
     def attack_enemy(self):
-        damage = random.randint(10, 20)  
+        base_damage = 10
+        if self.current_question_difficulty == "easy":
+            damage_modifier = 1.0  
+        elif self.current_question_difficulty == "medium":
+            damage_modifier = 1.5  
+        else:  
+            damage_modifier = 2.0
+        damage = random.randint(base_damage, base_damage * 2) * damage_modifier
         self.current_hp_enemy -= damage
         if self.current_hp_enemy <= 0:  
             self.current_hp_enemy = 0
@@ -274,7 +282,14 @@ class MainWidget(Widget):
         self.ui_hp_enemy.text = f"Enemy HP: {self.current_hp_enemy}"
 
     def enemy_attack(self):
-        damage = random.randint(5, 15)  
+        base_damage = 5
+        if self.current_question_difficulty == "easy":
+            damage_modifier = 1.0  
+        elif self.current_question_difficulty == "medium":
+            damage_modifier = 1.5  
+        else:  
+            damage_modifier = 2.0
+        damage = random.randint(base_damage, base_damage * 2) * damage_modifier
         self.current_hp_player -= damage
         if self.current_hp_player <= 0:  
             self.current_hp_player = 0
