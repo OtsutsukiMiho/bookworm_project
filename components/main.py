@@ -29,6 +29,8 @@ class MainWidget(Widget):
         self.main_music.loop = True
         self.game_music.loop = True
         self.volume = 0.25
+        self.main_music.play()
+        self.game_music.play()
         self.construct_main_menu()
         
     def on_back_button_pressed_option(self, instance):
@@ -68,6 +70,8 @@ class MainWidget(Widget):
         
         self.game_music.stop()
         self.main_music.play()
+        self.main_music.volume = self.volume
+        self.game_music.volume = self.volume
         
         self.title_label = Label(text="Bookworm Adventures", font_size=48, color="black")
         self.title_label.size_hint = (None, None)
@@ -106,6 +110,8 @@ class MainWidget(Widget):
         
         self.main_music.stop()
         self.game_music.play()
+        self.main_music.volume = self.volume
+        self.game_music.volume = self.volume
         
         top_layout = BoxLayout(orientation='vertical', spacing=20, padding=(10, 10))
         top_layout.size_hint = (None, None)
