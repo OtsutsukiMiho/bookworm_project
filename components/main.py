@@ -173,7 +173,7 @@ class MainWidget(Widget):
         yes_button = Button(text='Yes', size_hint=(None, None), size=(100, 50))
         no_button = Button(text='No', size_hint=(None, None), size=(100, 50))
 
-        yes_button.bind(on_press=lambda instance: self.surrender_and_return_to_main_menu(popup))
+        yes_button.bind(on_press=lambda instance: self.surrender(popup))
         no_button.bind(on_press=popup.dismiss)
 
         button_layout.add_widget(yes_button)
@@ -187,7 +187,7 @@ class MainWidget(Widget):
 
         popup.open()
     
-    def surrender_and_return_to_main_menu(self, popup_instance):
+    def surrender(self, popup_instance):
         popup_instance.dismiss()
         self.construct_main_menu()
         
@@ -265,7 +265,7 @@ class MainWidget(Widget):
     def attack_enemy(self):
         damage = random.randint(10, 20)  
         self.current_hp_enemy -= damage
-        if self.current_hp_enemy <= 0:  # แก้ไขที่นี่
+        if self.current_hp_enemy <= 0:  
             self.current_hp_enemy = 0
             self.status_label.text = "Congratulations! You have won the game!"
             self.status_label.color = "lime"
@@ -276,7 +276,7 @@ class MainWidget(Widget):
     def enemy_attack(self):
         damage = random.randint(5, 15)  
         self.current_hp_player -= damage
-        if self.current_hp_player <= 0:  # แก้ไขที่นี่
+        if self.current_hp_player <= 0:  
             self.current_hp_player = 0
             self.status_label.text = "Game over! You have been defeated!"
             self.status_label.color = "red"
@@ -289,10 +289,14 @@ class MainWidget(Widget):
         content_layout = BoxLayout(orientation='vertical', spacing=10, padding=10)
         content_layout.add_widget(Label(text=self.status_label.text))
         button = Button(text='Return to Main Menu')
-        button.bind(on_press=self.construct_main_menu)
+        button.bind(on_press=lambda instance: self.return_to_main_menu(popup))
         content_layout.add_widget(button)
         popup.content = content_layout
         popup.open()
+
+    def return_to_main_menu(self, popup_instance):
+        popup_instance.dismiss()
+        self.construct_main_menu() 
 
     def show_status_clear_text(self, instance):
         self.status_label.text = ""
