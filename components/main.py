@@ -309,7 +309,7 @@ class MainWidget(Widget):
             damage_modifier = 1.5  
         else:  
             damage_modifier = 2.0
-        damage = random.randint(base_damage, base_damage * 2) * damage_modifier
+        damage = int(random.randint(base_damage, base_damage * 2) * damage_modifier)
         self.current_hp_enemy -= damage
         if self.current_hp_enemy <= 0:  
             self.current_hp_enemy = 0
@@ -327,7 +327,7 @@ class MainWidget(Widget):
             damage_modifier = 1.5  
         else:  
             damage_modifier = 2.0
-        damage = random.randint(base_damage, base_damage * 2) * damage_modifier
+        damage = int(random.randint(base_damage, base_damage * 2) * damage_modifier)
         self.current_hp_player -= damage
         if self.current_hp_player <= 0:  
             self.current_hp_player = 0
