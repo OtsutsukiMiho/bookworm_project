@@ -161,8 +161,8 @@ class MainWidget(Widget):
         top_layout.add_widget(self.status_label)
 
         ui_hp_all = BoxLayout(orientation='horizontal', spacing=20, padding=(5, 5))
-        self.ui_hp_enemy = Label(text="Enemy HP: 0", font_size=20, color="red")
-        self.ui_hp_player = Label(text="Your HP: 0", font_size=20, color="black")
+        self.ui_hp_enemy = Label(text="Enemy HP: 0", font_size=20, color="red", bold=True)
+        self.ui_hp_player = Label(text="Your HP: 0", font_size=20, color="black", bold=True)
         ui_hp_all.add_widget(self.ui_hp_enemy)
         ui_hp_all.add_widget(self.ui_hp_player)
         top_layout.add_widget(ui_hp_all)
