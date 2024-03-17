@@ -10,16 +10,20 @@ from kivy.core.audio import SoundLoader
 from kivy.uix.slider import Slider
 from kivy.clock import Clock
 from kivy.uix.textinput import TextInput
+from kivy.uix.behaviors import ButtonBehavior
 import json
 import random
 import os
+
+class SoundIcon(ButtonBehavior, Image):
+    pass
 
 class MainWidget(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.main_music = SoundLoader.load('main.mp3')
-        self.game_music = SoundLoader.load('Ingame.mp3')
+        self.main_music = SoundLoader.load('sound/main.mp3')
+        self.game_music = SoundLoader.load('sound/Ingame.mp3')
         self.volume = 0.25
         self.main_music.play()
         self.main_music.loop = True
@@ -54,7 +58,7 @@ class MainWidget(Widget):
             Color(1, 1, 1, 0)  
             self.rect = Rectangle(size=self.size, pos=self.pos)
 
-        self.background_image = Image(source="maxresdefault.jpg")  
+        self.background_image = Image(source="Image/maxresdefault.jpg")  
         self.add_widget(self.background_image)
         self.background_image.allow_stretch = True
         self.background_image.keep_ratio = False
@@ -197,18 +201,41 @@ class MainWidget(Widget):
         new_title_label.top = Window.height - 50
         self.add_widget(new_title_label)
 
-        volume_label = Label(text="Volume:", font_size=24, color="black")
-        volume_label.size_hint = (None, None)
-        new_layout.add_widget(volume_label)
+        self.volume_percentage_label = Label(text=f"Volume : {int(self.volume * 100)}%", font_size=18, color="black")
+        self.volume_percentage_label.size_hint = (None, None)
+        new_layout.add_widget(self.volume_percentage_label)
 
         volume_slider = Slider(min=0, max=1, value=self.volume)
         volume_slider.bind(value=self.on_volume_changed)
         new_layout.add_widget(volume_slider)
 
+        sound_icon = SoundIcon(source='Image/speaker-filled-audio-tool.png', size_hint=(None, None), size=(50, 50))
+        sound_icon.bind(on_press=self.toggle_sound)
+        new_layout.add_widget(sound_icon)
+
+        if self.volume == 0:
+            sound_icon.source = 'Image/mute.png'
+
         new_back_button = Button(text="Back to Main Menu", size_hint=(None, None), size=(200, 60))
         new_back_button.bind(on_press=self.on_back_button_pressed_option)
         new_layout.add_widget(new_back_button)
-        
+
+    def toggle_sound(self, instance):
+        if self.volume > 0:
+            self.volume = 0
+            instance.source = 'Image/mute.png'
+        else:
+            self.volume = 0.25
+            instance.source = 'Image/speaker-filled-audio-tool.png'
+        self.main_music.volume = self.volume
+        self.game_music.volume = self.volume
+
+    def on_volume_changed(self, instance, value):
+        self.volume = value
+        self.main_music.volume = self.volume
+        self.game_music.volume = self.volume
+        self.volume_percentage_label.text = f"Volume : {int(self.volume * 100)}%"    
+
     def show_status_clear_text(self, instance):
         self.status_label.text = ""
 
