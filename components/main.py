@@ -257,6 +257,12 @@ class MainWidget(Widget):
         self.main_music.volume = self.volume
         self.game_music.volume = self.volume
 
+    def on_volume_changed(self, instance, value):
+        self.volume = value
+        self.main_music.volume = self.volume
+        self.game_music.volume = self.volume
+        self.volume_percentage_label.text = f"Volume : {int(self.volume * 100)}%"
+
     def attack_enemy(self):
         damage = random.randint(10, 20)  
         self.current_hp_enemy -= damage
