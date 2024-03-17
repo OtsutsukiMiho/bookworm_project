@@ -26,7 +26,6 @@ class MainWidget(Widget):
 
         self.main_music = SoundLoader.load('sound/main.mp3')
         self.game_music = SoundLoader.load('sound/Ingame.mp3')
-        self.volume = 0.25
         self.main_music.play()
         self.main_music.loop = True
         self.volume = 0.25
@@ -67,6 +66,12 @@ class MainWidget(Widget):
         self.background_image.pos = (0, 0)
         self.background_image.size = (Window.width, Window.height)
         
+        self.game_music.stop()
+        self.main_music.play()
+        self.game_music.loop = False
+        self.main_music.loop = True
+        self.game_music.volume = self.volume
+        
         self.title_label = Label(text="Bookworm Adventures", font_size=48, color="black")
         self.title_label.size_hint = (None, None)
         self.title_label.size = (self.width, 100)
@@ -101,7 +106,13 @@ class MainWidget(Widget):
 
     def construct_game_menu(self, instance):
         self.clear_layout()
-
+        
+        self.main_music.stop()
+        self.game_music.play()
+        self.game_music.loop = True
+        self.main_music.loop = False
+        self.game_music.volume = self.volume
+        
         top_layout = BoxLayout(orientation='vertical', spacing=20, padding=(10, 10))
         top_layout.size_hint = (None, None)
         top_layout.width = self.width  
@@ -126,6 +137,7 @@ class MainWidget(Widget):
 
         answer_layout = BoxLayout(orientation='horizontal', spacing=10, padding=(5, 5))
         self.answer_input = TextInput(hint_text="Type your answer here", multiline=False, font_size=18)
+        self.answer_input.bind(on_text_validate=self.check_answer)
         submit_button = Button(text="Submit Answer", size_hint=(None, None), size=(150, 50))
         submit_button.bind(on_press=self.check_answer)
         answer_layout.add_widget(self.answer_input)
@@ -145,11 +157,6 @@ class MainWidget(Widget):
         bottom_layout.add_widget(surrender_button)
 
         self.add_widget(bottom_layout)
-
-        self.main_music.stop()
-        self.game_music.play()
-        self.game_music.loop = True
-        self.game_music.volume = self.volume
 
         self.current_hp_enemy = 100
         self.current_hp_player = 100
@@ -190,6 +197,7 @@ class MainWidget(Widget):
         self.main_music.loop = True
         self.main_music.volume = self.volume
         popup_instance.dismiss()
+        self.clear_layout()
         self.construct_main_menu()
         
     def next_question(self):
