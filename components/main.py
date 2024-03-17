@@ -278,6 +278,9 @@ class MainWidget(Widget):
 
     def show_status_clear_text(self, instance):
         self.status_label.text = ""
+        
+    def focus_answer_input(self, instance):
+        self.answer_input.focus = True
 
     def check_answer(self, instance):
         user_answer = self.answer_input.text.strip().lower()
@@ -292,7 +295,7 @@ class MainWidget(Widget):
             self.status_label.color = "red"
             Clock.schedule_interval(self.show_status_clear_text, 1)
             self.enemy_attack()  
-        self.update_question()
+        Clock.schedule_interval(self.focus_answer_input, 0.1)
 
 class MainApp(App):
     def build(self):
