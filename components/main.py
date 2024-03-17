@@ -20,6 +20,32 @@ import os
 class SoundIcon(ButtonBehavior, Image):
     pass
 
+class MainMenuBackground(Widget):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        with self.canvas:
+            Color(1, 1, 1, 0)  
+            self.rect = Rectangle(size=self.size, pos=self.pos)
+        self.background_image = Image(source="Image/maxresdefault.jpg")
+        self.add_widget(self.background_image)
+        self.background_image.allow_stretch = True
+        self.background_image.keep_ratio = False
+        self.background_image.pos = (0, 0)
+        self.background_image.size = (Window.width, Window.height)
+
+class GameMenuBackground(Widget):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        with self.canvas:
+            Color(1, 1, 1, 0)  
+            self.rect = Rectangle(size=self.size, pos=self.pos)
+        self.background_image = Image(source="Image/ingame.jpg")
+        self.add_widget(self.background_image)
+        self.background_image.allow_stretch = True
+        self.background_image.keep_ratio = False
+        self.background_image.pos = (0, 0)
+        self.background_image.size = (Window.width, Window.height)
+
 class MainWidget(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -56,6 +82,9 @@ class MainWidget(Widget):
     def construct_main_menu(self):
 
         self.clear_layout()
+
+        main_menu_background = MainMenuBackground()
+        self.add_widget(main_menu_background)
 
         with self.canvas:
             Color(1, 1, 1, 0)  
@@ -107,6 +136,9 @@ class MainWidget(Widget):
 
     def construct_game_menu(self, instance):
         self.clear_layout()
+
+        game_menu_background = GameMenuBackground()
+        self.add_widget(game_menu_background)
         
         self.main_music.stop()
         self.game_music.play()
