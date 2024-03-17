@@ -11,6 +11,7 @@ from kivy.uix.slider import Slider
 from kivy.clock import Clock
 from kivy.uix.textinput import TextInput
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.gridlayout import GridLayout
 import json
 import random
 import os
@@ -230,11 +231,19 @@ class MainWidget(Widget):
         self.main_music.volume = self.volume
         self.game_music.volume = self.volume
 
-    def on_volume_changed(self, instance, value):
-        self.volume = value
-        self.main_music.volume = self.volume
-        self.game_music.volume = self.volume
-        self.volume_percentage_label.text = f"Volume : {int(self.volume * 100)}%"    
+    def attack_enemy(self):
+        damage = random.randint(10, 20)  
+        self.current_hp_enemy -= damage
+        if self.current_hp_enemy < 0:
+            self.current_hp_enemy = 0
+        self.ui_hp_enemy.text = f"Enemy HP: {self.current_hp_enemy}"
+
+    def enemy_attack(self):
+        damage = random.randint(5, 15)  
+        self.current_hp_player -= damage
+        if self.current_hp_player < 0:
+            self.current_hp_player = 0
+        self.ui_hp_player.text = f"Your HP: {self.current_hp_player}"
 
     def show_status_clear_text(self, instance):
         self.status_label.text = ""
@@ -245,11 +254,13 @@ class MainWidget(Widget):
             self.status_label.text = "Correct! Next question..."
             self.status_label.color = "lime"
             Clock.schedule_interval(self.show_status_clear_text, 1)
+            self.attack_enemy() 
             self.next_question()
         else:
             self.status_label.text = "Wrong! Try again..."
             self.status_label.color = "red"
             Clock.schedule_interval(self.show_status_clear_text, 1)
+            self.enemy_attack()  
         self.update_question()
 
 class MainApp(App):
