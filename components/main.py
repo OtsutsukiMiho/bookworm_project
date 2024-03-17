@@ -68,9 +68,6 @@ class MainWidget(Widget):
         
         self.game_music.stop()
         self.main_music.play()
-        self.game_music.loop = False
-        self.main_music.loop = True
-        self.game_music.volume = self.volume
         
         self.title_label = Label(text="Bookworm Adventures", font_size=48, color="black")
         self.title_label.size_hint = (None, None)
@@ -109,9 +106,6 @@ class MainWidget(Widget):
         
         self.main_music.stop()
         self.game_music.play()
-        self.game_music.loop = True
-        self.main_music.loop = False
-        self.game_music.volume = self.volume
         
         top_layout = BoxLayout(orientation='vertical', spacing=20, padding=(10, 10))
         top_layout.size_hint = (None, None)
@@ -145,7 +139,7 @@ class MainWidget(Widget):
         top_layout.add_widget(answer_layout)
 
         self.add_widget(top_layout)
-
+        
         bottom_layout = BoxLayout(orientation='horizontal', spacing=20, padding=(10, 10))
         bottom_layout.size_hint = (None, None)
         bottom_layout.width = self.width  
