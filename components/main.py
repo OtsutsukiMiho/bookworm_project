@@ -25,9 +25,9 @@ class MainWidget(Widget):
         super().__init__(**kwargs)
 
         self.main_music = SoundLoader.load('sound/main.mp3')
-        self.game_music = SoundLoader.load('sound/Ingame.mp3')
-        self.main_music.play()
+        self.game_music = SoundLoader.load('sound/GameBGM.mp3')
         self.main_music.loop = True
+        self.game_music.loop = True
         self.volume = 0.25
         self.construct_main_menu()
         
@@ -194,10 +194,7 @@ class MainWidget(Widget):
         popup.open()
     
     def surrender_and_return_to_main_menu(self, popup_instance):
-        self.main_music.loop = True
-        self.main_music.volume = self.volume
         popup_instance.dismiss()
-        self.clear_layout()
         self.construct_main_menu()
         
     def next_question(self):
