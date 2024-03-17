@@ -2,15 +2,53 @@
   "questions": [
     {
       "question": "What object that use to move cursor?",
-      "answer": "Mouse" 
+      "answer": "Mouse" ,
+      "difficulty": "easy"
     },
     {
       "question": "What object that use to open the light?",
-      "answer": "Switch"
+      "answer": "Switch",
+      "difficulty": "easy"
     },
     {
       "question": "What is the chemical symbol for water?",
-      "answer": "H2O"
+      "answer": "H2O",
+      "difficulty": "easy"
+    },
+    {
+      "question": "What is the capital of France?",
+      "answer": "Paris",
+      "difficulty": "easy"
+    },
+    {
+      "question": "What is the largest planet in our solar system?",
+      "answer": "Jupiter",
+      "difficulty": "medium"
+    },
+    {
+      "question": "What is the square root of 144?",
+      "answer": "12",
+      "difficulty": "hard"
+    },
+    {
+      "question": "What is the capital of Italy?",
+      "answer": "Rome",
+      "difficulty": "medium"
+    },
+    {
+      "question": "What is the atomic number of oxygen?",
+      "answer": "8",
+      "difficulty": "hard"
+    },
+    {
+      "question": "Which planet is known as the 'Red Planet'?",
+      "answer": "Mars",
+      "difficulty": "medium"
+    },
+    {
+      "question": "What is the chemical symbol for gold?",
+      "answer": "Au",
+      "difficulty": "hard"
     }
   ]
 }
