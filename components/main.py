@@ -54,6 +54,8 @@ class MainWidget(Widget):
                            fn_regular='fonts/TA 8 bit.otf')
         self.main_music = SoundLoader.load('sound/main.mp3')
         self.game_music = SoundLoader.load('sound/GameBGM.mp3')
+        self.win_sound = SoundLoader.load('sound/success-fanfare-trumpets-6185.mp3')
+        self.lose_sound = SoundLoader.load('sound/fiasco-154915.mp3')
         self.main_music.loop = True
         self.game_music.loop = True
         self.volume = 0.25
@@ -80,6 +82,14 @@ class MainWidget(Widget):
         self.volume = value
         self.main_music.volume = self.volume
         self.game_music.volume = self.volume
+
+    def play_win_sound(self):
+        if self.win_sound:
+            self.win_sound.play()
+
+    def play_lose_sound(self):
+        if self.lose_sound:
+            self.lose_sound.play()
 
     def construct_main_menu(self):
 
@@ -337,6 +347,8 @@ class MainWidget(Widget):
             self.show_end_game_popup()
             return
         self.ui_hp_enemy.text = f"Enemy HP: {self.current_hp_enemy}"
+        if self.current_hp_enemy <= 0:
+            self.play_win_sound()
 
     def enemy_attack(self):
         base_damage = 5
@@ -355,6 +367,8 @@ class MainWidget(Widget):
             self.show_end_game_popup()
             return
         self.ui_hp_player.text = f"Your HP: {self.current_hp_player}"
+        if self.current_hp_player <= 0:
+            self.play_lose_sound()
 
     def show_end_game_popup(self):
         popup = Popup(title='Game Over', size_hint=(None, None), size=(400, 200))
@@ -372,6 +386,11 @@ class MainWidget(Widget):
         popup.content = content_layout
         popup.open()
 
+        if "defeated" in self.status_label.text.lower():
+            self.play_lose_sound()  
+        else:
+            self.play_win_sound()
+            
     def return_to_game(self, popup_instance):
         popup_instance.dismiss()
         self.construct_game_menu() 
