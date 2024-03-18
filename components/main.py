@@ -13,6 +13,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.popup import Popup
 from kivy.core.text import LabelBase
+from kivy.metrics import dp
 import json
 import random
 import os
@@ -169,8 +170,12 @@ class MainWidget(Widget):
         top_layout.height = self.height * 0.8  
         top_layout.center = self.center
 
-        top_title_label = Label(text="Bookworm Adventures", font_name='8bit', font_size=70, color=(1, 0.6, 0, 1), bold=True, outline_color=(0, 0, 0, 1), outline_width=2)
+        top_title_label = Label(text="Bookworm Adventures", font_name='8bit', font_size=55, color=(1, 0.6, 0, 1), bold=True, outline_color=(0, 0, 0, 1), outline_width=2)
         top_layout.add_widget(top_title_label)
+
+        surrender_button = Button(text="Surrender", size_hint=(None, None), size=(150, 50))
+        surrender_button.bind(on_press=self.on_surrender_button_pressed)
+        top_layout.add_widget(surrender_button)
 
         self.question_label = Label(text="", font_size=24, color="black")
         top_layout.add_widget(self.question_label)
@@ -179,10 +184,10 @@ class MainWidget(Widget):
         top_layout.add_widget(self.status_label)
 
         ui_hp_all = BoxLayout(orientation='horizontal', spacing=20, padding=(5, 5))
-        self.ui_hp_enemy = Label(text="Enemy HP: 0", font_size=20, color="red", bold=True)
         self.ui_hp_player = Label(text="Your HP: 0", font_size=20, color="black", bold=True)
-        ui_hp_all.add_widget(self.ui_hp_enemy)
+        self.ui_hp_enemy = Label(text="Enemy HP: 0", font_size=20, color="red", bold=True)
         ui_hp_all.add_widget(self.ui_hp_player)
+        ui_hp_all.add_widget(self.ui_hp_enemy)
         top_layout.add_widget(ui_hp_all)
 
         answer_layout = BoxLayout(orientation='horizontal', spacing=10, padding=(5, 5))
@@ -201,10 +206,6 @@ class MainWidget(Widget):
         bottom_layout.width = self.width  
         bottom_layout.height = self.height * 0.2  
         bottom_layout.center = self.center
-
-        surrender_button = Button(text="Surrender", size_hint=(None, None), size=(150, 50))
-        surrender_button.bind(on_press=self.on_surrender_button_pressed)
-        bottom_layout.add_widget(surrender_button)
 
         self.add_widget(bottom_layout)
 
