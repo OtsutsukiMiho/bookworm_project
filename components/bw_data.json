@@ -49,6 +49,56 @@
       "question": "What is the chemical symbol for gold?",
       "answer": "Au",
       "difficulty": "hard"
+    },
+    {
+      "question": "Who wrote 'Romeo and Juliet'?",
+      "answer": "William Shakespeare",
+      "difficulty": "medium"
+    },
+    {
+      "question": "What is the freezing point of water in Celsius?",
+      "answer": "0",
+      "difficulty": "easy"
+    },
+    {
+      "question": "What is the symbol for the element iron?",
+      "answer": "Fe",
+      "difficulty": "medium"
+    },
+    {
+      "question": "What is the largest ocean on Earth?",
+      "answer": "Pacific Ocean",
+      "difficulty": "medium"
+    },
+    {
+      "question": "What is the chemical symbol for silver?",
+      "answer": "Ag",
+      "difficulty": "hard"
+    },
+    {
+      "question": "Who painted the Mona Lisa?",
+      "answer": "Leonardo da Vinci",
+      "difficulty": "medium"
+    },
+    {
+      "question": "What is the boiling point of water in Celsius?",
+      "answer": "100",
+      "difficulty": "easy"
+    },
+    {
+      "question": "What is the capital of Japan?",
+      "answer": "Tokyo",
+      "difficulty": "easy"
+    },
+    {
+      "question": "What is the chemical symbol for carbon?",
+      "answer": "C",
+      "difficulty": "medium"
+    },
+    {
+      "question": "Who developed the theory of relativity?",
+      "answer": "Albert Einstein",
+      "difficulty": "hard"
     }
   ]
 }
