@@ -3,7 +3,7 @@ from kivy.uix.widget import Widget
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
-from kivy.graphics import Rectangle, Color
+from kivy.graphics import Rectangle, Color, RoundedRectangle
 from kivy.core.window import Window
 from kivy.uix.image import Image
 from kivy.core.audio import SoundLoader
@@ -12,6 +12,7 @@ from kivy.clock import Clock
 from kivy.uix.textinput import TextInput
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.popup import Popup
+from kivy.core.text import LabelBase
 import json
 import random
 import os
@@ -48,7 +49,8 @@ class GameMenuBackground(Widget):
 class MainWidget(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
+        LabelBase.register(name='8bit',
+                           fn_regular='fonts/TA 8 bit.otf')
         self.main_music = SoundLoader.load('sound/main.mp3')
         self.game_music = SoundLoader.load('sound/GameBGM.mp3')
         self.main_music.loop = True
@@ -101,7 +103,7 @@ class MainWidget(Widget):
         self.main_music.volume = self.volume
         self.game_music.volume = self.volume
         
-        self.title_label = Label(text="Bookworm Adventures", font_size=48, color="black")
+        self.title_label = Label(text="Bookworm Adventures", font_name='8bit', font_size=70, color=(1, 0.6, 0, 1), bold=True, outline_color=(0, 0, 0, 1), outline_width=2)
         self.title_label.size_hint = (None, None)
         self.title_label.size = (self.width, 100)
         self.title_label.center_x = Window.width / 2
@@ -167,7 +169,7 @@ class MainWidget(Widget):
         top_layout.height = self.height * 0.8  
         top_layout.center = self.center
 
-        top_title_label = Label(text="Bookworm Adventures", font_size=36, color="black", size_hint_y=None, height=50)
+        top_title_label = Label(text="Bookworm Adventures", font_name='8bit', font_size=70, color=(1, 0.6, 0, 1), bold=True, outline_color=(0, 0, 0, 1), outline_width=2)
         top_layout.add_widget(top_title_label)
 
         self.question_label = Label(text="", font_size=24, color="black")
