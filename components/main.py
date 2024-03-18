@@ -12,7 +12,6 @@ from kivy.clock import Clock
 from kivy.uix.textinput import TextInput
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.popup import Popup
-from kivy.uix.gridlayout import GridLayout
 import json
 import random
 import os
@@ -144,6 +143,23 @@ class MainWidget(Widget):
         self.game_music.play()
         self.main_music.volume = self.volume
         self.game_music.volume = self.volume
+
+        gg_popup = Popup(title='', size_hint=(None, None), size=(400, 200))
+        gg_popup.background_color = (0, 0, 0, 0)  
+
+        game_layout = BoxLayout(orientation='horizontal', spacing=10, padding=10)
+
+        game_content_layout = BoxLayout(orientation='vertical', spacing=10)
+
+        game_start_label = Label(text="Game Start!", font_size=36, color=[1, 0.6, 0, 1])
+
+        game_content_layout.add_widget(game_start_label)
+        game_content_layout.add_widget(game_layout)
+
+        gg_popup.content = game_content_layout
+
+        gg_popup.open()
+        Clock.schedule_once(gg_popup.dismiss, 1)
         
         top_layout = BoxLayout(orientation='vertical', spacing=20, padding=(10, 10))
         top_layout.size_hint = (None, None)
