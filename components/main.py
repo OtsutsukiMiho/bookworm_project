@@ -136,13 +136,12 @@ class MainWidget(Widget):
                 self.remove_widget(widget)
                 self.remove_widget(self.title_label)
 
-    def construct_game_menu(self, instance):
+    def construct_game_menu(self, popup_instance=None):
         self.clear_layout()
 
         game_menu_background = GameMenuBackground()
         self.add_widget(game_menu_background)
 
-        self.popup = None
         self.main_music.stop()
         self.game_music.play()
         self.main_music.volume = self.volume
@@ -163,7 +162,6 @@ class MainWidget(Widget):
         gg_popup.content = game_content_layout
 
         gg_popup.open()
-        self.popup = gg_popup
         Clock.schedule_once(gg_popup.dismiss, 1)
         
         top_layout = BoxLayout(orientation='vertical', spacing=20, padding=(10, 10))
@@ -364,7 +362,7 @@ class MainWidget(Widget):
         content_layout.add_widget(Label(text=self.status_label.text))
 
         play_again_button = Button(text='Play Again')
-        play_again_button.bind(on_press=lambda instance: self.construct_game_menu(popup))
+        play_again_button.bind(on_press=lambda instance: self.return_to_game(popup))
         content_layout.add_widget(play_again_button)
 
         button = Button(text='Return to Main Menu')
@@ -374,13 +372,16 @@ class MainWidget(Widget):
         popup.content = content_layout
         popup.open()
 
+    def return_to_game(self, popup_instance):
+        popup_instance.dismiss()
+        self.construct_game_menu() 
+
     def return_to_main_menu(self, popup_instance):
         popup_instance.dismiss()
         self.construct_main_menu() 
 
     def show_status_clear_text(self, instance):
         self.status_label.text = ""
-        self.popup.dismiss()
         
     def focus_answer_input(self, instance):
         self.answer_input.focus = True
